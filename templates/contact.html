@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Contact Mr. Alex Company</title>
+{% endblock %}
+
+{% block extra_css %}
+/* Use the same styles as about page */
+.content-container {
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    width: 100%;
+    margin-top: -60px;
+}
+.content-card {
+    background-color: #3b3b6b;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 600px;
+    animation: fadeIn 0.8s ease-out;
+    color: #e0e0e0;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-card h2 {
+    color: #ff9f1c;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #4a4a7a;
+    padding-bottom: 5px;
+}
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+.contact-item i {
+    color: #ff9f1c;
+    margin-right: 15px;
+    font-size: 1.5em;
+    min-width: 30px;
+    text-align: center;
+}
+.contact-item a {
+    color: #a0a0c0;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.contact-item a:hover {
+    color: #ff9f1c;
+}
+{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div class="content-card">
+        <h2>Contact Mr. Alex Company</h2>
+        
+        <p>
+            We appreciate your interest in Mr. Alex Chatbot and Mr. Alex Company. Feel free to reach out to us using the contact information below for business inquiries, feedback, or support.
+        </p>
+        
+        <div class="mt-4">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="kdawit883@gmail.com">kdawit883@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>+251 950197401 (Support Line)</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Addis Ababa, Ethiopia</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-globe"></i>
+                <span>www.mralexcompany.com </span>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Privacy Policy - Mr. Alex Chatbot</title>
+{% endblock %}
+
+{% block extra_css %}
+/* Use the same styles as about/contact page for consistency */
+.content-container {
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    width: 100%;
+    margin-top: -60px;
+}
+.content-card {
+    background-color: #3b3b6b;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 800px; /* Wider card for policy text */
+    animation: fadeIn 0.8s ease-out;
+    color: #e0e0e0;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-card h2 {
+    color: #ff9f1c;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #4a4a7a;
+    padding-bottom: 5px;
+}
+.content-card h3 {
+    color: #ff9f1c; 
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+.content-card p, .content-card ul {
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+.content-card ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 10px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div class="content-card">
+        <h2>Privacy Policy for Mr. Alex Chatbot</h2>
+        <p><em>Last Updated: October 2025</em></p>
+
+        <p>
+            Mr. Alex Company is committed to protecting the privacy of our users. This policy outlines how your information is collected, used, and protected when you use the Mr. Alex Chatbot service.
+        </p>
+        
+        <h3>1. Information We Collect</h3>
+        <p>We collect the following types of information:</p>
+        <ul>
+            <li>**Account Information:** Username, Email, and Hashed Password (for login and security).</li>
+            <li>**Chat History:** All text and images sent to the chatbot are stored in our secure database linked to your user ID to maintain conversational context and history.</li>
+            <li>**Images:** Images uploaded for multimodal queries are temporarily processed and retained as part of the chat history, but are not used for external machine learning purposes.</li>
+        </ul>
+
+        <h3>2. How We Use Your Information</h3>
+        <p>Your information is primarily used to:</p>
+        <ul>
+            <li>Maintain continuous and contextual conversations (Chat History).</li>
+            <li>Authenticate your access to the service (Login).</li>
+            <li>Improve the responsiveness and accuracy of the chatbot service.</li>
+        </ul>
+
+        <h3>3. Data Security and Third Parties</h3>
+        <p>
+            We take reasonable measures to protect your data. Your chat content is stored in a secure local database (SQLite). **However, please note that all chat prompts and images are transmitted to the Gemini API (Google) for processing.** This transmission is necessary for the core function of the chatbot. We do not share your personal account information (email, password) with the API provider.
+        </p>
+        
+        <h3>4. Data Retention</h3>
+        <p>
+            You have the ability to delete your entire chat history at any time using the "Clear History" option in the user dropdown menu. Deleting your account will remove all associated user and chat data from our systems.
+        </p>
+
+        <h3>5. Contact Us</h3>
+        <p>
+            If you have any questions about this Privacy Policy, please contact us via email at <a href="mailto:info@mralexcompany.com">info@mralexcompany.com</a>.
+        </p>
+        
+    </div>
+</div>
+{% endblock %}

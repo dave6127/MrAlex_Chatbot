@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>About Mr. Alex Chatbot</title>
+{% endblock %}
+
+{% block extra_css %}
+/* Specific styles for Content pages - similar to auth pages */
+.content-container {
+    padding-top: 100px; /* Space from navbar */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Start content from the top */
+    min-height: 100vh;
+    width: 100%;
+    margin-top: -60px; 
+}
+.content-card {
+    background-color: #3b3b6b; /* Darker blue/purple card background */
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 700px;
+    animation: fadeIn 0.8s ease-out;
+    color: #e0e0e0;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-card h2 {
+    color: #ff9f1c; /* Accent color for headings */
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #4a4a7a;
+    padding-bottom: 5px;
+}
+.content-card h3 {
+    color: #ff9f1c; 
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+.content-card p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+.content-card ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div class="content-card">
+        <h2>About Mr. Alex Chatbot</h2>
+        
+        <p>
+            Mr. Alex Chatbot is a text-based Large Language Model designed and developed by **Mr. Alex Company**. Our mission is to provide an intelligent, localized, and contextually aware digital assistant experience, bridging the gap between cutting-edge AI technology and user needs.
+        </p>
+        
+        <h3>Core Features:</h3>
+        <ul>
+            <li>**Multilingual Support:** Responds in the user's language (Amharic or English).</li>
+            <li>**Multimodal Capability:** Can process both text prompts and images.</li>
+            <li>**Contextual Memory:** Maintains chat history for cohesive conversations.</li>
+            <li>**Mr. Alex Persona:** Follows a specific set of instructions and company guidelines.</li>
+        </ul>
+
+        <h3>The Creator: Dawit Kebede</h3>
+        <p>
+            The chatbot was coded by **Dawit Kebede**, the founder of Mr. Alex Company. 
+        </p>
+        <p>    His journey in technology is driven by a strong passion for innovation. Dawit is the founder of Mr. Alex, a private company focused on Artificial Intelligence (AI) creations and Cyber Security services. The main vision of Mr. Alex is to contribute to making Ethiopia a leader in technology and cyber security.
+        </p>
+        
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Mr. Alex Chatbot</title>
+{% endblock %}
+
+{% block extra_css %}
+/* Chatbot UI Styles (Polished look) */
+.chat-window {
+    width: 100%;
+    max-width: 900px; 
+    height: 95vh;
+    background-color: #2c2c54; 
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 0 auto; 
+    border: 1px solid #4a4a7a;
+}
+body {
+    align-items: flex-start;
+    padding-top: 15px; 
+    height: auto;
+    background-color: #1a1a2e; 
+}
+
+.chat-header {
+    background-color: #2c2c54; 
+    color: #ff9f1c; 
+    padding: 15px 25px;
+    border-bottom: 1px solid #4a4a7a;
+    font-size: 1.5em;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbox { 
+    flex-grow: 1; 
+    padding: 20px 25px; 
+    overflow-y: auto; 
+    background-color: #2c2c54; 
+    scrollbar-width: thin;
+    scrollbar-color: #4a4a7a #2c2c54;
+}
+#chatbox::-webkit-scrollbar {
+    width: 8px;
+}
+#chatbox::-webkit-scrollbar-thumb {
+    background-color: #4a4a7a;
+    border-radius: 10px;
+}
+#chatbox::-webkit-scrollbar-track {
+    background-color: #2c2c54;
+}
+
+.message-container {
+    display: flex;
+    margin-bottom: 25px;
+    align-items: flex-start;
+    opacity: 0; 
+    animation: slideIn 0.5s ease-out forwards; 
+}
+.message-container:nth-child(even) { animation-delay: 0.1s; } 
+.message-container:nth-child(odd) { animation-delay: 0s; }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* User Message */
+.user { 
+    justify-content: flex-end;
+}
+.user .msg { 
+    background-color: #3b3b6b; 
+    color: #e0e0e0; 
+    padding: 12px 18px;
+    border-radius: 18px 18px 4px 18px;
+    max-width: 80%;
+    font-size: 1.05em;
+    line-height: 1.6;
+}
+/* AI Message */
+.ai { 
+    justify-content: flex-start;
+}
+.ai .msg { 
+    background-color: #ff9f1c; 
+    color: #1a1a2e; 
+    padding: 12px 18px;
+    border-radius: 18px 18px 18px 4px;
+    max-width: 80%;
+    font-size: 1.05em;
+    line-height: 1.6;
+    overflow-wrap: break-word; 
+}
+
+/* --- Markdown Styling for AI Messages (Updated for Code Blocks) --- */
+.ai .msg h1, .ai .msg h2, .ai .msg h3 {
+    color: #1a1a2e; 
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(26, 26, 46, 0.3);
+    padding-bottom: 3px;
+}
+.ai .msg ul, .ai .msg ol {
+    margin: 10px 0 10px 20px;
+    padding-left: 10px;
+}
+
+/* IMPROVED Code Block Styling */
+.ai .msg pre {
+    background-color: #1a1a2e; 
+    color: #c8c8ff; 
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.9em;
+    border: 2px solid #4a4a7a; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Inline Code Styling */
+.ai .msg code {
+    background-color: rgba(26, 26, 46, 0.2); 
+    color: #1a1a2e; 
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.ai .msg p { margin-bottom: 5px;}
+.ai .msg strong {
+    font-weight: 700;
+}
+/* ------------------------------------------ */
+
+
+/* Loading Dots Animation */
+.loading-indicator .msg {
+    background-color: #4a4a7a;
+    color: transparent; 
+    display: flex;
+    align-items: center;
+    min-width: 60px;
+    justify-content: space-around;
+    text-indent: -9999px; 
+}
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1.0); opacity: 1; }
+}
+
+.loading-indicator .dot1, .loading-indicator .dot2, .loading-indicator .dot3 {
+    display: block;
+    width: 8px; 
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-indicator .dot2 {
+    animation-delay: -0.32s;
+}
+
+.loading-indicator .dot3 {
+    animation-delay: -0.16s;
+}
+
+
+.input-area {
+    display: flex;
+    border-top: 1px solid #4a4a7a;
+    padding: 20px 25px;
+    align-items: center;
+    background-color: #2c2c54;
+}
+
+#userInput { 
+    flex-grow: 1; 
+    padding: 12px 15px; 
+    border: none; 
+    border-radius: 25px; 
+    margin-right: 10px;
+    font-size: 16px;
+    background-color: #3b3b6b;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    resize: none; 
+    overflow-y: hidden; 
+    max-height: 200px; 
+}
+
+.input-area button { 
+    padding: 10px 20px;
+    background-color: #ff9f1c; 
+    color: #1a1a2e;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.1s;
+    flex-shrink: 0;
+}
+.input-area button:hover {
+    background-color: #e68a00;
+    transform: translateY(-1px);
+}
+{% endblock %}
+
+{% block content %}
+<div class="flash-messages" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 100; width: 80%; max-width: 600px;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div class="chat-window">
+    <div class="chat-header">
+        Mr. Alex Chatbot
+    </div>
+    
+    <div id="chatbox">
+        {% for message in chat_history %}
+            <div class="message-container {{ message.role }}">
+                <div class="msg">
+                    {% if message.role == 'user' %}
+                        {% if message.image_base64 %}
+                            {% if message.content %}
+                                {{ message.content | safe }}
+                            {% endif %}
+                            <div style="margin-top: 10px;">
+                                <img src="{{ message.image_base64 }}" alt="Uploaded Image" style="max-width: 200px; height: auto; border-radius: 8px; border: 2px solid #ff9f1c;">
+                            </div>
+                        {% else %}
+                            {{ message.content | safe }}
+                        {% endif %}
+                    {% else %}
+                        {{ message.content | markdown_to_html | safe }} 
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div class="input-area">
+        <input type="file" id="imageInput" accept="image/*" style="display:none;">
+        
+        <button onclick="document.getElementById('imageInput').click()" type="button" class="btn btn-secondary me-2" title="Attach Image" style="background-color: #4a4a7a; border: none; border-radius: 50%; width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-image" style="color: #e0e0e0; font-size: 1.2em;"></i>
+        </button>
+        
+        <div id="imagePreview" style="display:none; margin-right: 10px; position: relative; flex-shrink: 0;">
+            <img id="previewImage" src="#" alt="Image Preview" style="width: 40px; height: 40px; border-radius: 5px; object-fit: cover; border: 2px solid #ff9f1c;">
+            <span onclick="removeImage()" style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; width: 15px; height: 15px; line-height: 12px; font-size: 10px; cursor: pointer; text-align: center;">&times;</span>
+        </div>
+
+        <textarea id="userInput" placeholder="Ask anything, or ask about the image..." rows="1"></textarea>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const chatbox = document.getElementById('chatbox');
+    const inputElement = document.getElementById('userInput');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImage = document.getElementById('previewImage');
+    
+    function autoResize() {
+        inputElement.style.height = 'auto';
+        inputElement.style.height = inputElement.scrollHeight + 'px';
+    }
+
+    // Event listener: Image selection preview
+    imageInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                imagePreview.style.display = 'flex';
+            };
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    });
+
+    // Remove image function
+    function removeImage() {
+        imageInput.value = '';
+        imagePreview.style.display = 'none';
+        previewImage.src = '#';
+    }
+
+    inputElement.addEventListener('input', autoResize);
+    
+    function sendMessage() {
+        const prompt = inputElement.value.trim();
+        const imageFile = imageInput.files[0];
+
+        if (prompt === '' && !imageFile) return;
+
+        // Reset height and clear input
+        inputElement.style.height = 'auto';
+        inputElement.value = ''; 
+
+        // 1. Display User Message (Placeholder)
+        const userMsgDiv = document.createElement('div');
+        userMsgDiv.className = 'message-container user';
+        userMsgDiv.innerHTML = `<div class="msg"></div>`; 
+        chatbox.appendChild(userMsgDiv);
+        
+        // 2. Display Loading Indicator
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'message-container ai loading-indicator';
+        loadingIndicator.innerHTML = `<div class="msg"><div class="dot1"></div><div class="dot2"></div><div class="dot3"></div></div>`;
+        chatbox.appendChild(loadingIndicator);
+
+        chatbox.scrollTop = chatbox.scrollHeight;
+
+        // FormData for Multimodal Request
+        const formData = new FormData();
+        formData.append('prompt', prompt);
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
+        
+        // Remove image after it's been added to FormData
+        removeImage(); 
+
+        fetch('{{ url_for("ask_gemini") }}', { 
+            method: 'POST',
+            body: formData 
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove Loading indicator
+            loadingIndicator.remove(); 
+            
+            // ************ Display User Message Content ************
+            let userContent = prompt || '';
+            if (data.sent_image) {
+                // Now uses the Base64 URL sent from the backend
+                const imgHtml = `<div style="margin-top: 10px;"><img src="${data.sent_image}" alt="Uploaded Image" style="max-width: 200px; height: auto; border-radius: 8px; border: 2px solid #ff9f1c;"></div>`;
+                userContent = (prompt ? prompt : '') + imgHtml; 
+            }
+            
+            // Replace the empty user placeholder with actual content
+            userMsgDiv.querySelector('.msg').innerHTML = userContent;
+            
+            // 3. Display AI Response
+            const aiMsgDiv = document.createElement('div');
+            aiMsgDiv.className = 'message-container ai';
+            
+            // The response is already HTML from the backend (mistune.html)
+            aiMsgDiv.innerHTML = `<div class="msg">${data.response}</div>`;
+            chatbox.appendChild(aiMsgDiv);
+            
+            // Scroll to the bottom
+            chatbox.scrollTop = chatbox.scrollHeight; 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadingIndicator.remove();
+            
+            const errorMsgDiv = document.createElement('div');
+            errorMsgDiv.className = 'message-container ai';
+            errorMsgDiv.innerHTML = `<div class="msg">Error: Could not connect to the AI service.</div>`;
+            chatbox.appendChild(errorMsgDiv);
+            
+            chatbox.scrollTop = chatbox.scrollHeight;
+        });
+    }
+    
+    // Send message on Enter key press
+    inputElement.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); 
+            sendMessage();
+        }
+    });
+    
+    // Scroll to the bottom when the page loads
+    window.onload = function() {
+        chatbox.scrollTop = chatbox.scrollHeight;
+        autoResize(); 
+    };
+
+</script>
+{% endblock %}

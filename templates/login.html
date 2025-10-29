@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+/* Auth Styles */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 80vh; 
+}
+.auth-card {
+    background-color: #3b3b6b;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+}
+.auth-card h2 {
+    color: #ff9f1c;
+    margin-bottom: 25px;
+    text-align: center;
+}
+.auth-card .form-control {
+    background-color: #4a4a7a;
+    border: 1px solid #ff9f1c;
+    color: #e0e0e0;
+}
+.auth-card .form-control:focus {
+    background-color: #4a4a7a;
+    border-color: #ff9f1c;
+    box-shadow: 0 0 0 0.25rem rgba(255, 159, 28, 0.5);
+    color: #e0e0e0;
+}
+.auth-card .btn {
+    background-color: #ff9f1c;
+    border-color: #ff9f1c;
+    color: #1a1a2e;
+    font-weight: bold;
+}
+.auth-card .text-muted a {
+    color: #ff9f1c;
+    text-decoration: none;
+}
+.auth-card .text-muted a:hover {
+    text-decoration: underline;
+}
+
+/* Flash Message Styling */
+.auth-card .alert {
+    margin-bottom: 20px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+}
+.auth-card .alert-danger {
+    background-color: #dc3545;
+    color: white;
+}
+.auth-card .alert-success {
+    background-color: #28a745;
+    color: white;
+}
+.auth-card .alert-warning {
+    background-color: #ffc107;
+    color: #1a1a2e;
+}
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Login to Mr. Alex Chatbot</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn w-100 mt-3">Login</button>
+        </form>
+        <p class="text-center text-muted mt-3">
+            Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
