@@ -9,7 +9,7 @@ from PIL import Image
 import io
 import base64
 import mistune
-import secrets # <--- ለደህንነት ሲባል SECRET_KEYን በዘፈቀደ ለመፍጠር ጨምረናል
+import secrets
 
 # --- 1. Flask and Database Configuration ---
 app = Flask(__name__)
@@ -212,7 +212,8 @@ def chat_page():
     return render_template('index.html', chat_history=chat_history)
 
 
-@app.route('/ask', methods=['POST'])
+# ⚠️ ⚠️ ⚠️ ወሳኝ ማስተካከያ: /ask ወደ /api/chat ተቀይሯል! ⚠️ ⚠️ ⚠️
+@app.route('/api/chat', methods=['POST'])
 @login_required 
 def ask_gemini():
     user_prompt = request.form.get('prompt', '')
